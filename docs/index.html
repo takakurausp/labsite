@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高倉耕一研究室 LED@USP - 生物のふしぎを解き明かす</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00d4ff;
+            --secondary: #ff6b6b;
+            --accent: #ffd93d;
+            --dark: #1a1a2e;
+            --darker: #16213e;
+            --light: #fff;
+        }
+
+        body {
+            font-family: 'Hiragino Kaku Gothic Pro', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* ヘッダー */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* ヒーローセクション */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 12rem;
+            padding-bottom: 4rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 50%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            display: block;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.2em;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: var(--light);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.5);
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* 共通セクションスタイル */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            opacity: 0.8;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        /* プロフィールセクション */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .profile-image {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid var(--primary);
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-placeholder {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .profile-placeholder .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s;
+        }
+
+        .info-card:hover {
+            transform: translateX(10px);
+        }
+
+        .info-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* 研究スタンスセクション */
+        .research-stance {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 30px;
+            padding: 3rem;
+        }
+
+        .stance-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stance-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 107, 107, 0.1));
+            padding: 2rem;
+            border-radius: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stance-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .stance-card .emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .stance-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        /* 繁殖干渉セクション */
+        .reproduction-section {
+            position: relative;
+        }
+
+        .reproduction-section::before {
+            content: '🔬';
+            position: absolute;
+            top: -3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 4rem;
+            opacity: 0.3;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            padding: 1rem 2rem;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--light);
+            cursor: pointer;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .tab-button:hover,
+        .tab-button.active {
+            background: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .tab-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 3rem;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .example-card {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 217, 61, 0.1));
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .example-card h4 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* 最新研究セクション */
+        .latest-research {
+            background: rgba(255, 107, 107, 0.05);
+            border-radius: 30px;
+            padding: 3rem;
+            border: 2px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .research-highlight {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .highlight-image {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .highlight-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .highlight-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--secondary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* その他の研究セクション */
+        .other-research {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .research-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .research-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(255, 217, 61, 0.2);
+        }
+
+        .research-card-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .research-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .research-card-content {
+            padding: 1.5rem;
+        }
+
+        .research-card-content h3 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        /* フッター */
+        footer {
+            background: var(--darker);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 2px solid var(--primary);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .research-highlight {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+        }
+
+        /* スクロールアニメーション */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* インタラクティブ要素 */
+        .interactive-demo {
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .fixed-params-info {
+            background: rgba(255, 217, 61, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        .fixed-params-info p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .simulation-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .control-group {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            margin-bottom: 0.5rem;
+            accent-color: var(--primary);
+        }
+
+        .control-group span {
+            display: block;
+            text-align: right;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .simulation-graph {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .simulation-explanation {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .simulation-explanation h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        #graphCanvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .column-box {
+            background: rgba(255, 217, 61, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-radius: 10px;
+        }
+
+        .column-box h4 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">🔬 LED@USP</div>
+        <nav>
+            <ul>
+                <li><a href="#profile">プロフィール</a></li>
+                <li><a href="#stance">研究スタンス</a></li>
+                <li><a href="#reproduction">繁殖干渉</a></li>
+                <li><a href="#latest">最新研究</a></li>
+                <li><a href="#other">その他</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1><span>🌿 生物のふしぎを</span><span>科学の力で解き明かす</span></h1>
+            <p>高倉耕一（教授）が挑む、昆虫たちの知られざる世界へようこそ！</p>
+            <a href="#profile" class="cta-button">探索を始める →</a>
+        </div>
+        <div class="scroll-hint">⬇️</div>
+    </section>
+
+    <section id="profile" class="scroll-reveal">
+        <h2 class="section-title">👨‍🔬 高倉耕一（教授）</h2>
+        <p class="section-subtitle">滋賀県立大学 環境科学部 生物資源管理学科</p>
+
+        <div class="profile-grid">
+            <div class="profile-image">
+                <div class="profile-placeholder">
+                    <div class="icon">👤</div>
+                    <p>写真: <strong>profile.jpg</strong></p>
+                </div>
+            </div>
+            <div class="profile-info">
+                <div class="info-card">
+                    <h3>🎓 専門分野</h3>
+                    <p>昆虫生態学・個体群生態学・進化生態学</p>
+                </div>
+                <div class="info-card">
+                    <h3>🏫 所属</h3>
+                    <p>滋賀県立大学 環境科学部 生物資源管理学科 教授</p>
+                </div>
+                <div class="info-card">
+                    <h3>📚 担当科目</h3>
+                    <p>環境科学概論Ⅰ・動物生態学・害虫管理学 など</p>
+                </div>
+                <div class="info-card">
+                    <h3>📚 著書</h3>
+                    <p style="margin-top: 0.3rem; font-size: 0.9rem;">• <a href="https://www.unp.or.jp/ISBN/ISBN978-4-8158-0925-6.html" target="_blank" style="color: var(--primary);">『繁殖干渉: 理論と実態』（名古屋大学出版会, 2018）</a></p>
+                    <p style="margin-top: 0.3rem; font-size: 0.9rem;">• <a href="https://www.kspub.co.jp/book/detail/5129524.html" target="_blank" style="color: var(--primary);">『雑草学入門』（講談社, 2018）</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="stance" class="scroll-reveal">
+        <h2 class="section-title">🔍 研究の基本スタンス</h2>
+        <p class="section-subtitle">多くの人が「分かったつもり」だけど、実は分かっていないことのメカニズムを解明！</p>
+
+        <div class="research-stance">
+            <div class="stance-cards">
+                <div class="stance-card">
+                    <span class="emoji">🏞️</span>
+                    <h3>フィールド</h3>
+                    <p>琵琶湖周辺を主な研究フィールドとしています。身近な自然の中に、まだまだ解明されていないふしぎが隠されています。</p>
+                </div>
+                <div class="stance-card">
+                    <span class="emoji">🐛</span>
+                    <h3>対象生物</h3>
+                    <p>昆虫を中心に、イヌノフグリのような植物からオオサンショウウオのような両生類まで幅広く研究しています。</p>
+                </div>
+                <div class="stance-card">
+                    <span class="emoji">🔬</span>
+                    <h3>研究手法</h3>
+                    <p>実験室での観察から野外調査、DNA分析、統計モデル（ベイズ推定など）まで、多角的なアプローチで研究を進めます。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reproduction" class="scroll-reveal">
+        <h2 class="section-title">💕 繁殖干渉：生物界の「間違い」が決定的！</h2>
+        <p class="section-subtitle">近縁種どうしの「間違った交尾」が、資源争い以上に強力な影響を与えるとは！？</p>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('concept')">基本概念</button>
+            <button class="tab-button" onclick="showTab('importance')">なぜ重要？</button>
+            <button class="tab-button" onclick="showTab('examples')">具体例</button>
+            <button class="tab-button" onclick="showTab('simulator')">シミュレーター</button>
+        </div>
+
+        <div class="tab-content active" id="concept">
+            <h3>📖 繁殖干渉って何？</h3>
+            <p>繁殖干渉とは、ある生物の繁殖活動が、近縁な別の種の繁殖成功率を<strong class="highlight">「直接的」に下げてしまう現象</strong>です。</p>
+            <br>
+            <p>もっと簡単に言うと、<strong>「間違った相手と交尾してしまって、子供が増えなくなってしまう」</strong>ことなんです。</p>
+            <br>
+            <p>例えば、種の違う昆虫どうしが間違って交尾してしまったり、植物の花粉を間違った種に運んでしまったりすることで、相手の繁殖を邪魔してしまうのです。まるで、スマホで間違った相手にメッセージを送り続けてしまって、本当に連絡したい相手とつながらなくなってしまうような状態に近いかもしれません。</p>
+            <br>
+            <p>直感的には「そんなのはただの間違いで、大ごとにはならないだろう」と思うかもしれません。しかし、例えば在来種の運命を決定するような大問題なのだということを、私たちは実証研究で明らかにしてきました。</p>
+            <br>
+            <p>高倉は、この繁殖干渉研究の実証を先駆けて行った研究者の一人であり、名古屋大学出版会から出版された専門書『繁殖干渉: 理論と実態』の編者も務めました。この分野をリードする研究者の一人なんです！</p>
+        </div>
+
+        <div class="tab-content" id="importance">
+            <h3>⚡ なぜこれが重要なの？</h3>
+            <p>従来、生物が「すみ分け」したり、外来種が在来種を駆逐したりする理由は、エサや場所を奪い合う「資源競争」で説明されてきました。</p>
+            <br>
+            <p>しかし、Kuno (1992)の数理モデルは、間違った求愛・送粉である「繁殖干渉」がより重大な影響を与えることを予測しましたが、その時点では実際の生き物での例は知られていませんでした。</p>
+            <br>
+            <p>高倉を始めとする研究グループは、この繁殖干渉が、植物でも動物でも生じていることを、様々な生物を題材として実証してきました！</p>
+            <br>
+            <p>これは、外来生物問題や種の絶滅や保護、有害生物の管理を考える上で、とても重要な発見です。</p>
+
+            <div class="column-box">
+                <h4>💡 コラム：生態学と数学</h4>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.9;">生態学では数学を道具として使うことが多いです。生物の生態や進化の行方を議論するときに、数式が大きな助けになります。数理モデルは、現象を数式を使って記述し、将来の挙動を予測する役割を果たしています。</p>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.9;">Kuno (1992)のモデルは、その好例です。「繁殖干渉が資源競争より強力である」という予言をした数理モデルが、その後の多くの実証研究によって裏付けられました。</p>
+            </div>
+        </div>
+
+        <div class="tab-content" id="examples">
+            <h3>🔬 具体的な例を見てみよう</h3>
+            <div class="example-grid">
+                <div class="example-card">
+                    <h4>🌼 植物：イヌノフグリの悲劇</h4>
+                    <p>外来種のオオイヌノフグリが、在来種イヌノフグリを急速に駆逐して分布を広げました。外来種が繁殖干渉を通じて在来種の種子を減らすことや、外来種がまだ侵入・定着していない離島では在来種が残っていることなどを明らかにしてきました。</p>
+                    <br>
+                    <small class="photo-hint">📸 推奨写真ファイル名: <strong>cocklebur.jpg</strong></small>
+                </div>
+                <div class="example-card">
+                    <h4>🪲 昆虫：ミバエ類の食性の決定</h4>
+                    <p>熱帯果樹の大害虫であるミバエ類は、実験室ではいろいろな果物を食べることができますが、野外では特定の果実だけを食べることがわかっていました。その原因がミバエ同士の繁殖干渉であることを、インドネシアや沖縄での研究により明らかにしました。この研究により卒業生の北野さん・久岡さんがそれぞれ博士の学位を取得しています。</p>
+                    <br>
+                    <small class="photo-hint">📸 推奨写真ファイル名: <strong>fruitfly.jpg</strong></small>
+                </div>
+                <div class="example-card">
+                    <h4>🐟 魚類：琵琶湖固有種の衰退原因</h4>
+                    <p>琵琶湖に固有なスジシマドジョウ類が2種存在していますが、このうちビワコガタスジシマドジョウは特に絶滅が危惧される種です。私たちの研究により、その原因も繁殖干渉が関係していることが明らかにされました。この研究により卒業生の森井さんが博士の学位を取得しています。</p>
+                    <br>
+                    <small class="photo-hint">📸 推奨写真ファイル名: <strong>loach.jpg</strong></small>
+                </div>
+            </div>
+        </div>
+
+            <div class="tab-content" id="simulator">
+            <h3>🎮 繁殖干渉シミュレーター</h3>
+            <p>Kuno (1992)の繁殖干渉モデルを体験しよう！この数理モデルは、繁殖干渉がいかに大きな影響を持っているかを理論的に示しました。この数理モデルで予測される個体数の変化を、ここで簡単にシミュレーションすることができます。繁殖干渉係数c₁₂の初期値は0.5になっており、これは在来種と出会った外来種が間違って求愛してしまう確率が50%であることを示しています。単純化するために、在来種と外来種の間に餌などをめぐる競争（資源競争）はなく、基本的な増殖率は等しいことを仮定しています。</p>
+
+            <div class="fixed-params-info">
+                <p>固定パラメータ：r = 0.15, d = 0.05, 環境収容力 K = 100（共通）</p>
+                <p style="margin-top: 0.5rem; font-size: 0.85rem; opacity: 0.7;">※ h = -(r-d)/K = -0.001（密度効果係数、負の値）</p>
+                <p style="margin-top: 0.3rem; font-size: 0.8rem; opacity: 0.6;">r：出生率、d：死亡率、K：環境収容力</p>
+            </div>
+
+            <div class="simulation-controls">
+                <div class="control-group">
+                    <label>在来種 初期個体数 N₁₀</label>
+                    <input type="range" id="speciesA" min="10" max="100" value="100" oninput="updateSimulation()">
+                    <span id="speciesA-value">100</span>
+                </div>
+                <div class="control-group">
+                    <label>外来種 初期個体数 N₂₀</label>
+                    <input type="range" id="speciesB" min="1" max="100" value="10" oninput="updateSimulation()">
+                    <span id="speciesB-value">10</span>
+                </div>
+                <div class="control-group">
+                    <label>繁殖干渉係数 c₁₂（外来種→在来種）</label>
+                    <input type="range" id="param1" min="0" max="150" value="50" oninput="updateSimulation()">
+                    <span id="param1-value">0.5</span>
+                </div>
+            </div>
+
+            <div class="simulation-graph">
+                <canvas id="graphCanvas" width="600" height="300"></canvas>
+            </div>
+
+            <button class="cta-button" onclick="runSimulation()" style="margin-top: 1rem; margin-bottom: 1rem;">シミュレーション実行</button>
+
+            <div class="simulation-explanation" id="simulationExplanation">
+                <h4>モデルの解説</h4>
+                <p><strong>Kuno (1992) 繁殖干渉モデル：</strong>個体群動態方程式に繁殖干渉の効果を導入したモデルです。近縁種間での繁殖干渉の効果を表現します。</p>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">方程式：dN₁/dt = r · (N₁/(N₁ + c₁₂N₂)) · N₁ - d · N₁ + h · N₁²</p>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">外来種：dN₂/dt = r · N₂ - d · N₂ + h · N₂²</p>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">※ h = -(r-d)/K（密度効果係数、負の値）</p>
+                <p style="margin-top: 0.5rem; color: var(--accent);">💡 c₁₂が大きいほど、在来種の繁殖が外来種によって強く阻害されます！</p>
+                <p style="margin-top: 1rem; font-size: 0.85rem; opacity: 0.7;">Kuno, E. (1992) Competitive exclusion through reproductive interference. <em>Researches on Population Ecology</em> 34: 275-284.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="latest" class="scroll-reveal">
+        <h2 class="section-title">🚨 最新研究：オオサンショウウオの危機</h2>
+        <p class="section-subtitle">2026年1月発表 | 京都大学との共同研究</p>
+
+        <div class="latest-research">
+            <h3>🌊 賀茂川のオオサンショウウオ：特別天然記念物が消えゆく</h3>
+
+            <div class="research-highlight">
+                <div class="highlight-image">
+                    <div class="profile-placeholder">
+                        <div class="icon">🐸</div>
+                        <p>写真: <strong>salamander.jpg</strong></p>
+                    </div>
+                </div>
+                <div class="highlight-content">
+                    <div class="stat-box">
+                        <div class="stat-number">4.5</div>
+                        <div class="stat-label">純粋な在来種の推定個体数（2021年時点）</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">2,822</div>
+                        <div class="stat-label">交雑個体の推定個体数</div>
+                    </div>
+                    <p>💡 <strong>発見率0.08%未満</strong>の捕獲調査では、交雑種の増加を食い止められないことが定量的に示されました。</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <h4>📌 研究からのメッセージ</h4>
+                <p>調査データから統計的手法（ベイズ推定など）により現状や未来を推定し、その結果を具体的な政策に反映させることの重要性が強調されています。</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="other" class="scroll-reveal">
+        <h2 class="section-title">📚 その他の研究テーマ</h2>
+        <p class="section-subtitle">多彩な興味が、一つに繋がる</p>
+
+        <div class="other-research">
+            <div class="research-card">
+                <div class="research-card-image">
+                    <div class="profile-placeholder">
+                        <div class="icon">🐦</div>
+                        <p>写真: <strong>cicada.jpg</strong></p>
+                    </div>
+                </div>
+                <div class="research-card-content">
+                    <h3>🐦 セミと野鳥の関係</h3>
+                    <p>生息地が分断されることで生じる「境界（エッジ）」が、アブラゼミやクマゼミなどの被食リスク（天敵の鳥類による）にどう影響するか研究。これは、環境保全における「エッジ効果」を理解する上で重要なテーマです。</p>
+                </div>
+            </div>
+
+            <div class="research-card">
+                <div class="research-card-image">
+                    <div class="profile-placeholder">
+                        <div class="icon">🌸</div>
+                        <p>写真: <strong>flowers.jpg</strong></p>
+                    </div>
+                </div>
+                <div class="research-card-content">
+                    <h3>🌸 花の色の多様性</h3>
+                    <p>ニワゼキショウなどの植物において、種間の相互作用が花の色にどのような空間分布や進化を促すか研究。花の色の多様性がどのように維持されているかを、生態学的な視点から解明しています。</p>
+                </div>
+            </div>
+
+            <div class="research-card">
+                <div class="research-card-image">
+                    <div class="profile-placeholder">
+                        <div class="icon">🐛</div>
+                        <p>写真: <strong>caterpillar.jpg</strong></p>
+                    </div>
+                </div>
+                <div class="research-card-content">
+                    <h3>🐛 イモムシと天敵の関係</h3>
+                    <p>植物を食害するイモムシ（蛾や蝶の幼虫）には、多くの天敵がいます。それでもイモムシたちは、天敵からの攻撃をかわし命を繋いでいます。</p>
+                    <p style="margin-top: 0.5rem;">私たちの研究室では、身近なイモムシを対象として、そのような天敵との攻防を明らかにする研究を行っています。たとえば、寄生バエが宿主であるイモムシの行動を変化させる現象について研究しています。</p>
+                </div>
+            </div>
+
+            <div class="research-card">
+                <div class="research-card-image">
+                    <div class="profile-placeholder">
+                        <div class="icon">🪲</div>
+                        <p>写真: <strong>beetle.jpg</strong></p>
+                    </div>
+                </div>
+                <div class="research-card-content">
+                    <h3>🪲 昆虫の繁殖戦略</h3>
+                    <p>マメゾウムシのメスの積極的な求愛行動や、オスからメスへの「栄養のプレゼント」が繁殖にどう影響するか研究。昆虫たちの繁殖行動は、資源配分や個体群動態に大きく影響を与える重要な要素です。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="logo">🔬 LED@USP</div>
+        <p style="margin-top: 1rem; opacity: 0.7;">滋賀県立大学 高倉耕一研究室</p>
+        <p style="opacity: 0.5; font-size: 0.9rem;">© 2026 高倉耕一研究室</p>
+        <div class="footer-links">
+            <a href="#">滋賀県立大学</a>
+            <a href="#">お問い合わせ</a>
+            <a href="#">研究論文</a>
+        </div>
+    </footer>
+
+    <script>
+        // スムーズスクロール
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                try {
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                } catch (error) {
+                    console.error('Smooth scroll error:', error);
+                    // Google Sitesでsmooth scrollが動作しない場合のフォールバック
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // タブ切り替え
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // 繁殖干渉シミュレーター
+        let animationId = null;
+
+        // 固定パラメータ
+        const r_fixed = 0.15; // 出生率（共通）
+        const d_fixed = 0.05; // 死亡率（共通）
+        const K_fixed = 100; // 環境収容力（共通）
+
+        function updateSimulation() {
+            const speciesA = document.getElementById('speciesA');
+            const speciesB = document.getElementById('speciesB');
+            const param1 = document.getElementById('param1');
+
+            if (speciesA) document.getElementById('speciesA-value').textContent = speciesA.value;
+            if (speciesB) document.getElementById('speciesB-value').textContent = speciesB.value;
+
+            if (param1) {
+                const param = parseFloat(param1.value) / 100;
+                document.getElementById('param1-value').textContent = param.toFixed(2);
+            }
+        }
+
+        function runSimulation() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+
+            const canvas = document.getElementById('graphCanvas');
+            if (!canvas) {
+                console.error('Canvas not found');
+                return;
+            }
+            const ctx = canvas.getContext('2d');
+
+            // パラメータ取得
+            const speciesA = document.getElementById('speciesA');
+            const speciesB = document.getElementById('speciesB');
+            const param1Input = document.getElementById('param1');
+
+            if (!speciesA || !speciesB || !param1Input) {
+                console.error('Required inputs not found');
+                return;
+            }
+
+            const N1_0 = parseInt(speciesA.value);
+            const N2_0 = parseInt(speciesB.value);
+            const c12 = parseFloat(param1Input.value) / 100; // 繁殖干渉係数 (0-1.5)
+
+            // 固定パラメータ
+            const r = r_fixed; // 出生率（共通）
+            const d = d_fixed; // 死亡率（共通）
+            const K = K_fixed; // 環境収容力（共通）
+
+            // 密度効果係数（h = -(r-d)/K、負の値）
+            const h = -(r - d) / K;
+
+            // シミュレーション設定
+            const years = 100;
+            const timeSteps = 10000;
+            const dt = years / timeSteps;
+
+            let N1 = N1_0;
+            let N2 = N2_0;
+
+            // データ格納
+            const data1 = [];
+            const data2 = [];
+            const labels = [];
+
+            // シミュレーション計算
+            let t = 0;
+            for (let i = 0; i <= timeSteps; i++) {
+                data1.push(N1);
+                data2.push(N2);
+                labels.push(Math.round(t));
+
+                // Kuno (1992) 繁殖干渉モデル
+                // dN1/dt = r * (N1/(N1 + c12*N2)) * N1 - d * N1 + h * N1^2
+                // dN2/dt = r * N2 - d * N2 + h * N2^2
+                const interference1 = N1 / (N1 + c12 * N2 + 0.001);
+
+                const dN1 = r * interference1 * N1 - d * N1 + h * N1 * N1;
+                const dN2 = r * N2 - d * N2 + h * N2 * N2;
+
+                N1 = Math.max(0, N1 + dN1 * dt);
+                N2 = Math.max(0, N2 + dN2 * dt);
+
+                t += dt;
+            }
+
+            // グラフ描画（アニメーション）
+            let currentStep = 0;
+            const animationSpeed = 100;
+
+            function drawGraph() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // 背景
+                ctx.fillStyle = 'rgba(26, 26, 46, 0.9)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // グリッド
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.lineWidth = 1;
+                for (let i = 0; i <= 10; i++) {
+                    const y = (canvas.height / 10) * i;
+                    ctx.beginPath();
+                    ctx.moveTo(60, y + 10);
+                    ctx.lineTo(canvas.width - 20, y + 10);
+                    ctx.stroke();
+                }
+
+                // 軸ラベル（Y軸）
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.font = '11px sans-serif';
+                ctx.textAlign = 'right';
+                const maxVal = K * 1.1;
+                for (let i = 0; i <= 10; i++) {
+                    const y = (canvas.height - 40) / 10 * i + 20;
+                    const value = Math.round(maxVal - (maxVal / 10) * i);
+                    ctx.fillText(value.toString(), 55, y + 4);
+                }
+
+                // X軸ラベル
+                ctx.textAlign = 'center';
+                for (let i = 0; i <= 10; i++) {
+                    const x = (canvas.width - 80) / 10 * i + 60;
+                    const year = Math.round(years * i / 10);
+                    ctx.fillText(year + '年', x, canvas.height - 5);
+                }
+
+                // 凡例
+                ctx.fillStyle = '#00d4ff';
+                ctx.fillRect(70, 20, 20, 10);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.textAlign = 'left';
+                ctx.fillText('在来種 N₁', 95, 29);
+
+                ctx.fillStyle = '#ff6b6b';
+                ctx.fillRect(180, 20, 20, 10);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.fillText('外来種 N₂', 205, 29);
+
+                // データ描画
+                const scaleY = (canvas.height - 50) / maxVal;
+                const scaleX = (canvas.width - 80) / years;
+
+                ctx.lineWidth = 3;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                // 在来種（青）
+                ctx.strokeStyle = '#00d4ff';
+                ctx.beginPath();
+                for (let i = 0; i <= currentStep; i++) {
+                    const x = labels[i] * scaleX + 60;
+                    const y = canvas.height - 30 - data1[i] * scaleY;
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                ctx.stroke();
+
+                // 外来種（赤）
+                ctx.strokeStyle = '#ff6b6b';
+                ctx.beginPath();
+                for (let i = 0; i <= currentStep; i++) {
+                    const x = labels[i] * scaleX + 60;
+                    const y = canvas.height - 30 - data2[i] * scaleY;
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                ctx.stroke();
+
+                if (currentStep < timeSteps) {
+                    currentStep += animationSpeed;
+                    if (currentStep > timeSteps) currentStep = timeSteps;
+                    animationId = requestAnimationFrame(drawGraph);
+                } else {
+                    // 解説更新
+                    updateExplanation(data1[timeSteps], data2[timeSteps], c12, N1_0, N2_0);
+                }
+            }
+
+            drawGraph();
+        }
+
+        function updateExplanation(finalN1, finalN2, c12, N1_0, N2_0) {
+            const explanationDiv = document.getElementById('simulationExplanation');
+
+            let dominanceText = '';
+            const ratio1 = N1_0 > 0 ? finalN1 / N1_0 : 0;
+            const ratio2 = N2_0 > 0 ? finalN2 / N2_0 : 0;
+
+            if (finalN2 > finalN1 * 1.5) {
+                // 外来種が優占
+                dominanceText = `<strong class="highlight">外来種が優占しています</strong>。在来種は繁殖干渉の影響で大幅に個体数を減らしました。`;
+            } else if (finalN1 > finalN2 * 1.5) {
+                // 在来種が優占
+                dominanceText = `<strong class="highlight">在来種が優占しています</strong>。繁殖干渉係数が低く、在来種が優位に立ちました。`;
+            } else if (finalN2 < 5) {
+                // 外来種が絶滅
+                dominanceText = `<strong class="highlight">外来種が絶滅しました</strong>。繁殖干渉の影響が弱く、外来種が生存できませんでした。`;
+            } else if (finalN1 < 5) {
+                // 在来種が絶滅
+                dominanceText = `<strong class="highlight">在来種が絶滅しました</strong>。繁殖干渉係数が強すぎるため、在来種が生存できませんでした。`;
+            } else {
+                // 接近
+                dominanceText = `<strong class="highlight">両種が接近した個体数になっています</strong>。繁殖干渉の影響が均衡しています。`;
+            }
+
+            let additionalText = '';
+            if (finalN2 > finalN1 * 1.5 && c12 > 0.3) {
+                additionalText = `<br><br><p style="margin-top: 0.5rem; color: var(--accent);">💡 <strong>重要な発見：</strong>この数理モデルは、資源競争はなくとも、求愛の間違い（繁殖干渉）の効果だけで、在来種から外来種への置き換わりが生じうることを示しています。</p>`;
+            }
+
+            explanationDiv.innerHTML = `
+                <h4>シミュレーション結果の解説</h4>
+                <p>モデル：<strong>Kuno (1992) 繁殖干渉モデル</strong></p>
+                <p>最終個体数：在来種 <strong>${finalN1.toFixed(1)}</strong> / 外来種 <strong>${finalN2.toFixed(1)}</strong></p>
+                <p>個体数変化率：在来種 ${(ratio1 * 100).toFixed(0)}% / 外来種 ${(ratio2 * 100).toFixed(0)}%</p>
+                <p>繁殖干渉係数 c₁₂：<strong>${c12.toFixed(2)}</strong></p>
+                <br>
+                <p>${dominanceText}</p>
+                ${additionalText}
+                <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">※このシミュレーションは教育目的の簡略化されたモデルです。高倉の研究では、より詳細なデータと高度な統計モデル（ベイズ推定など）を用いて現実の生態系現象を解明しています。</p>
+                <p style="margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.75;">この数理モデルは、その当時未知であった繁殖干渉の重要性を指摘・予言しました。この研究に触発されて、私たちのタンポポ・イヌノフグリ・ミバエなどの繁殖干渉の研究がスタートし、世界的に先駆的な実証研究となりました。</p>
+            `;
+        }
+
+        // スクロールアニメーション
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // マトリックス風背景アニメーション（Google Sites対応）
+        const matrixChars = ['N₁', 'N₂', 'dN/dt', 'r', 'd', 'K', 'h', 'c₁₂', 'P(A|B)', '∫', '∑', 'π'];
+
+        function createMatrixChar() {
+            // Google Sitesではアニメーションを無効化
+            if (window.location.hostname.includes('sites.google.com')) {
+                return;
+            }
+
+            const char = document.createElement('div');
+            const charText = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+            const fontSize = Math.random() * 10 + 12;
+            const duration = Math.random() * 10 + 5;
+            const opacity = Math.random() * 0.15 + 0.1;
+
+            char.style.cssText = `
+                position: fixed;
+                font-family: 'Courier New', monospace;
+                font-size: ${fontSize}px;
+                font-weight: bold;
+                font-style: italic;
+                color: #00ff00;
+                pointer-events: none;
+                opacity: ${opacity};
+                z-index: 0;
+                top: -20px;
+            `;
+            char.style.left = Math.random() * 100 + 'vw';
+            char.textContent = charText;
+            document.body.appendChild(char);
+
+            // アニメーション用
+            let top = -20;
+            const speed = (20 + Math.random() * 20) / duration;
+
+            function animate() {
+                top += speed;
+                char.style.top = top + 'px';
+                char.style.opacity = Math.max(0, opacity * (1 - top / window.innerHeight));
+
+                if (top < window.innerHeight) {
+                    requestAnimationFrame(animate);
+                } else {
+                    char.remove();
+                }
+            }
+
+            animate();
+        }
+
+        // 定期的に文字生成
+        setInterval(createMatrixChar, 300);
+    </script>
+</body>
+</html>
